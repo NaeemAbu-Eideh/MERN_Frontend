@@ -1,135 +1,133 @@
-import React, { useState } from 'react';
-import { FaUser, FaShieldAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // للتنقل بين الصفحات
+import React, {useState} from 'react';
+import {FaUser, FaShieldAlt} from 'react-icons/fa';
+import {Link} from 'react-router-dom'; // للتنقل بين الصفحات
 
 const Register = () => {
-  const [accountType, setAccountType] = useState('admin'); // الافتراضي admin حسب الصورة
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
+    const [accountType, setAccountType] = useState('admin');
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-      <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl w-full min-h-[600px]">
-        
-        {/* --- الجزء الأيسر (نفس تصميم اللوج ان) --- */}
-        <div className="w-full md:w-1/2 bg-[#F0F6FF] p-10 flex flex-col justify-center">
-          <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-            <FaUser className="text-white text-3xl" />
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-2 leading-tight">
-            TOURNAMENT<br />ORGANIZER
-          </h1>
-          <p className="text-gray-500 text-lg mb-8 leading-relaxed mt-4">
-            Manage tournaments, track participants, and coordinate events with real-time updates and AI-powered insights.
-          </p>
-          {/* قائمة الميزات */}
-          <div className="space-y-6">
-            <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+    return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
+            <div
+                className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl w-full min-h-[600px]">
+                <div className="w-full md:w-1/2 bg-[#F0F6FF] p-10 flex flex-col justify-center">
+                    <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                        <FaUser className="text-white text-3xl"/>
+                    </div>
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-2 leading-tight">
+                        TOURNAMENT<br/>ORGANIZER
+                    </h1>
+                    <p className="text-gray-500 text-lg mb-8 leading-relaxed mt-4">
+                        Manage tournaments, track participants, and coordinate events with real-time updates and
+                        AI-powered insights.
+                    </p>
+                    <div className="space-y-6">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                                <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-gray-800">Real-time Updates</h3>
+                                <p className="text-sm text-gray-500">Get instant notifications for tournament
+                                    changes</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-gray-800">AI-Powered Insights</h3>
+                                <p className="text-sm text-gray-500">Smart analytics and recommendations</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-gray-800">Stadium Management</h3>
+                                <p className="text-sm text-gray-500">Coordinate venues and schedules efficiently</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h3 className="font-bold text-gray-800">Real-time Updates</h3>
-                    <p className="text-sm text-gray-500">Get instant notifications for tournament changes</p>
+
+                <div className="w-full md:w-1/2 bg-white p-10 md:p-12 flex flex-col justify-center">
+                    <div className="flex mb-6">
+                        <Link to="/login"
+                              className="w-1/2 pb-3 text-center text-gray-400 font-semibold border-b border-gray-200 hover:text-gray-600">
+                            LOGIN
+                        </Link>
+                        <button className="w-1/2 pb-3 text-center text-blue-600 font-bold border-b-2 border-blue-600">
+                            REGISTER
+                        </button>
+                    </div>
+                    <div className="mb-5">
+                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Account
+                            Type</label>
+                        <div className="flex gap-4">
+                            <button
+                                onClick={() => setAccountType('user')}
+                                className={`flex-1 flex items-center justify-center py-3 rounded-lg border transition-all ${accountType === 'user' ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                            >
+                                <FaUser className="mr-2"/> USER
+                            </button>
+                            <button
+                                onClick={() => setAccountType('admin')}
+                                className={`flex-1 flex items-center justify-center py-3 rounded-lg border transition-all ${accountType === 'admin' ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}
+                            >
+                                <FaShieldAlt className="mr-2"/> ADMIN
+                            </button>
+                        </div>
+                    </div>
+                    <div className="flex gap-4 mb-4">
+                        <div className="w-1/2">
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">First
+                                Name</label>
+                            <input type="text" placeholder="John"
+                                   className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"/>
+                        </div>
+                        <div className="w-1/2">
+                            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Last
+                                Name</label>
+                            <input type="text" placeholder="Doe"
+                                   className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"/>
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Email</label>
+                        <input type="email" placeholder="your@email.com"
+                               className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"/>
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Password</label>
+                        <input type="password" placeholder="••••••••"
+                               className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"/>
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Confirm
+                            Password</label>
+                        <input type="password" placeholder="••••••••"
+                               className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"/>
+                    </div>
+                    <button
+                        className="w-full bg-[#1A5CFF] hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 transition duration-300">
+                        REGISTER AS {accountType.toUpperCase()}
+                    </button>
+
                 </div>
             </div>
-            <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                </div>
-                <div>
-                    <h3 className="font-bold text-gray-800">AI-Powered Insights</h3>
-                    <p className="text-sm text-gray-500">Smart analytics and recommendations</p>
-                </div>
-            </div>
-            <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
-                    <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                </div>
-                <div>
-                    <h3 className="font-bold text-gray-800">Stadium Management</h3>
-                    <p className="text-sm text-gray-500">Coordinate venues and schedules efficiently</p>
-                </div>
-            </div>
-          </div>
         </div>
-
-        {/* --- الجزء الأيمن (فورم التسجيل) --- */}
-        <div className="w-full md:w-1/2 bg-white p-10 md:p-12 flex flex-col justify-center">
-          
-          {/* التبويبات (Tabs) */}
-          <div className="flex mb-6">
-            <Link to="/login" className="w-1/2 pb-3 text-center text-gray-400 font-semibold border-b border-gray-200 hover:text-gray-600">
-                LOGIN
-            </Link>
-            <button className="w-1/2 pb-3 text-center text-blue-600 font-bold border-b-2 border-blue-600">
-                REGISTER
-            </button>
-          </div>
-
-          {/* نوع الحساب */}
-          <div className="mb-5">
-            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Account Type</label>
-            <div className="flex gap-4">
-              <button 
-                onClick={() => setAccountType('user')}
-                className={`flex-1 flex items-center justify-center py-3 rounded-lg border transition-all ${accountType === 'user' ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}
-              >
-                <FaUser className="mr-2" /> USER
-              </button>
-              <button 
-                onClick={() => setAccountType('admin')}
-                className={`flex-1 flex items-center justify-center py-3 rounded-lg border transition-all ${accountType === 'admin' ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-gray-200 text-gray-500 hover:bg-gray-50'}`}
-              >
-                <FaShieldAlt className="mr-2" /> ADMIN
-              </button>
-            </div>
-          </div>
-
-          {/* الاسم الأول والأخير (بجانب بعض) */}
-          <div className="flex gap-4 mb-4">
-            <div className="w-1/2">
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">First Name</label>
-                <input type="text" placeholder="John" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-            </div>
-            <div className="w-1/2">
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Last Name</label>
-                <input type="text" placeholder="Doe" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-            </div>
-          </div>
-
-          {/* البريد الإلكتروني */}
-          <div className="mb-4">
-            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Email</label>
-            <input type="email" placeholder="your@email.com" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-          </div>
-
-          {/* كلمة المرور */}
-          <div className="mb-4">
-            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Password</label>
-            <input type="password" placeholder="••••••••" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-          </div>
-
-           {/* تأكيد كلمة المرور */}
-           <div className="mb-6">
-            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Confirm Password</label>
-            <input type="password" placeholder="••••••••" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors" />
-          </div>
-
-          {/* زر التسجيل (يتغير نصه حسب النوع المختار) */}
-          <button className="w-full bg-[#1A5CFF] hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 transition duration-300">
-            REGISTER AS {accountType.toUpperCase()}
-          </button>
-
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Register;
