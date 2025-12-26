@@ -131,7 +131,6 @@ export default function AdminDashboard() {
     }, [tournaments, matches, stadiums, joinRequests]);
 
     const handleCreateNew = () => {
-        // مكانها تفتح مودال / تنقلك لصفحة create
         alert("Create New (hook it to your modal/route)");
     };
 
