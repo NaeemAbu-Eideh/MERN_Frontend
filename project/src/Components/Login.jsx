@@ -5,11 +5,8 @@ import axios from "axios";
 
 export default function Login() {
     const navigate = useNavigate();
-    // values
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    // errors
     const [emailErr, setEmailErr] = useState("");
     const [passwordErr, setPasswordErr] = useState("");
 
@@ -20,7 +17,6 @@ export default function Login() {
 
     const applyBackendErrors = (errorsObj = {}) => {
         clearErrors();
-
         if (errorsObj.email?.msg) setEmailErr(errorsObj.email.msg);
         if (errorsObj.password?.msg) setPasswordErr(errorsObj.password.msg);
     };
@@ -39,19 +35,13 @@ export default function Login() {
             console.log("LOGIN SUCCESS:", res.data);
             navigate("/home")
         } catch (err) {
-            if (axios.isAxiosError(err) && err.response) {
-                const { status, data } = err.response;
-
-                if (status === 422 || status === 401) {
-                    applyBackendErrors(data?.errors);
-                    return;
-                }
-
-                console.log("Server error:", status, data);
-                return;
+            if (err.response.status === 422) {
+                applyBackendErrors(err.response.data?.errors);
             }
-
-            console.log("Network/unknown error:", err.message);
+            if (err.response.status === 401) {
+                const msg = err.response.data?.message
+                setPasswordErr(msg);
+            }
         }
     };
 
