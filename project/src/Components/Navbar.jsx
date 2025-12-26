@@ -20,7 +20,7 @@ export default function Navbar() {
         <NavItem to="/home" icon={<FaThLarge />} text="HOME" />
         <NavItem to="/tournaments" icon={<FaTrophy />} text="TOURNAMENTS"/>
         <NavItem to="/stadiums" icon={<FaMapMarkerAlt />} text="STADIUMS"/>
-        <NavItem to="/dashboard" icon={<FaRegUser />} text="MY DASHBOARD"/>
+        {/*<NavItem to="/dashboard" icon={<FaRegUser />} text="MY DASHBOARD"/>*/}
         <NavItem to="/admin" icon={<FaCog />} text="ADMIN"/>
       </div>
     </nav>

@@ -8,6 +8,7 @@ import Navbar from './Components/Navbar';
 import Tournaments from './Components/Tournaments';
 import Stadiums from './Components/Stadiums';
 import Home from './Components/Home';
+import AdminDashboard from "./Components/Admin.jsx";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                     <Route path='/tournaments' element={<Tournaments/>}/>
                     <Route path="/stadiums" element={<Stadiums/>}/>
                     <Route path="/home" element={<Home/>}/>
+                    <Route path={"/admin"} element={<AdminDashboard/>}/>
                 </Routes>
             </div>
         </>
