@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {FaTrophy, FaUsers, FaMapMarkerAlt, FaCalendarAlt, FaSearch, FaArrowRight} from 'react-icons/fa';
 
-export default function Home() {
+export default function Home({isLoggedIn}) {
     const stats = [
         {id: 1, label: "ACTIVE TOURNAMENTS", value: "156", icon: <FaTrophy/>, color: "text-blue-600"},
         {id: 2, label: "PARTICIPANTS", value: "2,847", icon: <FaUsers/>, color: "text-green-600"},
@@ -56,15 +56,15 @@ export default function Home() {
                               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-blue-200 transition-all">
                             BROWSE TOURNAMENTS
                         </Link>
-                        <Link to="/login"
-                              className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-bold py-3 px-8 rounded-lg transition-all">
+                        {!isLoggedIn ? <Link to="/login"
+                                            className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-bold py-3 px-8 rounded-lg transition-all">
                             SIGN IN
-                        </Link>
+                        </Link>: <></>}
                     </div>
                 </div>
                 <div
-                    className="w-full md:w-1/2 h-80 bg-gray-100 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-200">
-                    <span className="text-gray-400 font-bold text-lg">HERO IMAGE</span>
+                    className="w-full md:w-1/2 h-80 bg-gray-100 rounded-2xl flex items-center justify-center border-2 border-gray-200">
+                    <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkcEMvifGRXnI85AnCJ5dQRKAIfiytz9ivjQ-xHWA4&s"} className={"h-full w-full rounded-2xl"}/>
                 </div>
             </div>
             <div

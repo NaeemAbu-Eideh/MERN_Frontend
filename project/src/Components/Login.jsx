@@ -3,7 +3,7 @@ import {FaUser} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
-export default function Login() {
+export default function Login({ setUser, setIsLoggedIn }) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -33,7 +33,13 @@ export default function Login() {
         try {
             const res = await axios.post("http://localhost:8008/api/login", user);
             console.log("LOGIN SUCCESS:", res.data);
-            navigate("/home")
+
+            localStorage.setItem("auth_user", JSON.stringify(res.data.user));
+
+            setUser(res.data.user);
+            setIsLoggedIn(true);
+            navigate(res.data.user.role === "admin" ? "/admin" : "/home");
+            // navigate("/home")
         } catch (err) {
             if (err.response.status === 422) {
                 applyBackendErrors(err.response.data?.errors);
