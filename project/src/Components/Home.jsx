@@ -10,7 +10,6 @@ export default function Home({isLoggedIn}) {
         {id: 4, label: "UPCOMING EVENTS", value: "89", icon: <FaCalendarAlt/>, color: "text-orange-500"},
     ];
     const featuredTournaments = [
-
         {
             id: 1,
             title: "Summer Championship 2024",
@@ -60,7 +59,7 @@ export default function Home({isLoggedIn}) {
                         {!isLoggedIn ? <Link to="/login"
                                             className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-bold py-3 px-8 rounded-lg transition-all">
                             SIGN IN
-                        </Link>: <></>}
+                        </Link>:         console.log("hi")}
                     </div>
                 </div>
                 <div
