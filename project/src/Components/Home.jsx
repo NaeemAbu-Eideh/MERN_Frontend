@@ -10,6 +10,7 @@ export default function Home({isLoggedIn}) {
         {id: 4, label: "UPCOMING EVENTS", value: "89", icon: <FaCalendarAlt/>, color: "text-orange-500"},
     ];
     const featuredTournaments = [
+
         {
             id: 1,
             title: "Summer Championship 2024",
