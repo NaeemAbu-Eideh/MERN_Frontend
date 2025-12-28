@@ -114,7 +114,7 @@ const Register = () => {
         };
 
         try {
-            const res = await axios.post("http://localhost:8008/api/createUser", user);
+            const res = await axios.post("http://localhost:3000/api/createUser", user);
             setFirstName("")
             setLastName("")
             setEmail("")
