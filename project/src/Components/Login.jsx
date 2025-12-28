@@ -39,6 +39,7 @@ export default function Login({ setUser, setIsLoggedIn }) {
             setUser(res.data.user);
             setIsLoggedIn(true);
             navigate(res.data.user.role === "admin" ? "/admin" : "/home");
+            navigate("/home")
         } catch (err) {
             if (err.response.status === 422) {
                 applyBackendErrors(err.response.data?.errors);

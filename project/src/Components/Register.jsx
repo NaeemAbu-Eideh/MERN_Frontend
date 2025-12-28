@@ -101,8 +101,8 @@ const Register = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        // const ok = validate();
-        // if (!ok) return;
+        const ok = validate();
+        if (!ok) return;
 
         const user = {
             firstName: firstName.trim(),
