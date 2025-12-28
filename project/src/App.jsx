@@ -48,6 +48,7 @@ function App() {
                     <Route path="/home" element={<Home isLoggedIn={isLoggedIn} allUsers={allUsers} />}/>
                     <Route path="/admin" element={<AdminRoute isLoggedIn={isLoggedIn} user={user}><AdminDashboard/></AdminRoute>}/>
                     <Route path="*" element={<Navigate to="/home" replace/>}/>
+                    <Route path="/tournaments/:id" element={<TournamentDetails />} />
                 </Routes>
             </div>
         </>);
