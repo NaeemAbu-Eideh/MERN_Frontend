@@ -39,6 +39,8 @@ export default function Home({isLoggedIn}) {
         }
     ];
 
+
+
     return (
         <div className="p-8 max-w-7xl mx-auto font-sans text-gray-800">
             <div
@@ -59,7 +61,7 @@ export default function Home({isLoggedIn}) {
                         {!isLoggedIn ? <Link to="/login"
                                             className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 font-bold py-3 px-8 rounded-lg transition-all">
                             SIGN IN
-                        </Link>:         console.log("hi")}
+                        </Link> :         console.log("hi")}
                     </div>
                 </div>
                 <div
