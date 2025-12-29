@@ -10,14 +10,14 @@ import {
     FaUserFriends,
 } from "react-icons/fa";
 import axios from "axios";
+import {sendPostToAi} from "../methods/functions/ai.jsx";
 
 export default function TournamentDetails() {
     const { id } = useParams();
-
+    const [aiData, setAiData] = useState("");
     const [tournament, setTournament] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // ✅ Get logged-in user from localStorage (same place you stored it after login)
     const authUser = JSON.parse(localStorage.getItem("auth_user") || "null");
     const isAdmin = authUser?.role === "admin";
 
@@ -36,6 +36,31 @@ export default function TournamentDetails() {
         };
         getTournament();
     }, [id]);
+
+    const useAI = async () => {
+        if (!tournament) return;
+
+        setAiData("Generating summary...");
+        const object = {
+            rule: tournament.rules,
+            startDate: tournament.startDate,
+            endDate: tournament.endDate,
+            sportType: tournament.sportType,
+            mode: tournament.mode,
+            duration: durationDays,
+        };
+
+        console.log("Sending to AI:", object);
+
+        try {
+            const data = await sendPostToAi(object);
+            console.log("AI Response:", data);
+            setAiData(data);
+        } catch (error) {
+            console.error("AI Error:", error);
+            setAiData("Failed to generate description.");
+        }
+    }
 
     const formatDate = (dateString) => {
         if (!dateString) return "—";
@@ -257,6 +282,7 @@ export default function TournamentDetails() {
                     </div>
                 </div>
             </div>
+            <button className={"border"} onClick={useAI}>click to integration with api</button>
         </div>
     );
 }
