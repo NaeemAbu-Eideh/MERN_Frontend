@@ -31,7 +31,7 @@ export default function Login({ setUser, setIsLoggedIn }) {
         };
 
         try {
-            const res = await axios.post("http://localhost:3000/api/login", user);
+            const res = await axios.post("http://localhost:8008/api/login", user);
             console.log("LOGIN SUCCESS:", res.data);
 
             localStorage.setItem("auth_user", JSON.stringify(res.data.user));

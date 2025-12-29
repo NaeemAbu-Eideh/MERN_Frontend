@@ -1,16 +1,16 @@
-import React, {useState} from "react";
-import {FaUser, FaShieldAlt} from "react-icons/fa";
-import {Link} from "react-router-dom";
+import React, { useState } from "react";
+import { FaUser } from "react-icons/fa";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+    const navigate = useNavigate();
     // values
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [role, setRole] = useState("user"); // "user" | "admin"
 
     // errors
     const [firstNameErr, setFirstNameErr] = useState("");
@@ -18,7 +18,6 @@ const Register = () => {
     const [emailErr, setEmailErr] = useState("");
     const [passwordErr, setPasswordErr] = useState("");
     const [confirmPasswordErr, setConfirmPasswordErr] = useState("");
-    const [roleErr, setRoleErr] = useState("");
 
     const clearErrors = () => {
         setFirstNameErr("");
@@ -26,7 +25,6 @@ const Register = () => {
         setEmailErr("");
         setPasswordErr("");
         setConfirmPasswordErr("");
-        setRoleErr("");
     };
 
     const applyBackendErrors = (errors = {}) => {
@@ -37,9 +35,7 @@ const Register = () => {
         if (errors.email?.msg) setEmailErr(errors.email.msg);
         if (errors.password?.msg) setPasswordErr(errors.password.msg);
         if (errors.confirmPassword?.msg) setConfirmPasswordErr(errors.confirmPassword.msg);
-        if (errors.role?.msg) setRoleErr(errors.role.msg);
     };
-
 
     const validate = () => {
         let ok = true;
@@ -91,11 +87,6 @@ const Register = () => {
             ok = false;
         }
 
-        if (role !== "user" && role !== "admin") {
-            setRoleErr("Please choose an account type.");
-            ok = false;
-        }
-
         return ok;
     };
 
@@ -110,16 +101,18 @@ const Register = () => {
             email: email.trim(),
             password,
             confirmPassword,
-            role,
+            role: "user", // ✅ always user
         };
 
         try {
-            const res = await axios.post("http://localhost:3000/api/createUser", user);
-            setFirstName("")
-            setLastName("")
-            setEmail("")
-            setPassword("")
-            setConfirmPassword("")
+            await axios.post("http://localhost:8008/api/createUser", user);
+
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            navigate("/login")
         } catch (err) {
             if (axios.isAxiosError(err) && err.response) {
                 if (err.response.status === 422) {
@@ -129,7 +122,6 @@ const Register = () => {
             }
             console.log(err);
         }
-
     };
 
     const inputBase =
@@ -139,19 +131,20 @@ const Register = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-            <div
-                className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl w-full min-h-[600px]">
+            <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl w-full min-h-[600px]">
                 {/* LEFT */}
                 <div className="w-full md:w-1/2 bg-[#F0F6FF] p-10 flex flex-col justify-center">
                     <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                        <FaUser className="text-white text-3xl"/>
+                        <FaUser className="text-white text-3xl" />
                     </div>
                     <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-2 leading-tight">
-                        TOURNAMENT<br/>ORGANIZER
+                        TOURNAMENT
+                        <br />
+                        ORGANIZER
                     </h1>
                     <p className="text-gray-500 text-lg mb-8 leading-relaxed mt-4">
-                        Manage tournaments, track participants, and coordinate events with real-time updates and
-                        AI-powered insights.
+                        Manage tournaments, track participants, and coordinate events with
+                        real-time updates and AI-powered insights.
                     </p>
                 </div>
 
@@ -173,47 +166,6 @@ const Register = () => {
                     </div>
 
                     <form onSubmit={onSubmit}>
-                        {/* ROLE */}
-                        <div className="mb-5">
-                            <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">
-                                Account Type
-                            </label>
-
-                            <div className="flex gap-4">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setRole("user");
-                                        setRoleErr("");
-                                    }}
-                                    className={`flex-1 flex items-center justify-center py-3 rounded-lg border transition-all ${
-                                        role === "user"
-                                            ? "border-blue-500 bg-blue-50 text-blue-600"
-                                            : "border-gray-200 text-gray-500 hover:bg-gray-50"
-                                    }`}
-                                >
-                                    <FaUser className="mr-2"/> USER
-                                </button>
-
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setRole("admin");
-                                        setRoleErr("");
-                                    }}
-                                    className={`flex-1 flex items-center justify-center py-3 rounded-lg border transition-all ${
-                                        role === "admin"
-                                            ? "border-blue-500 bg-blue-50 text-blue-600"
-                                            : "border-gray-200 text-gray-500 hover:bg-gray-50"
-                                    }`}
-                                >
-                                    <FaShieldAlt className="mr-2"/> ADMIN
-                                </button>
-                            </div>
-
-                            {roleErr && <p className={errText}>{roleErr}</p>}
-                        </div>
-
                         {/* NAMES */}
                         <div className="flex gap-4 mb-4">
                             <div className="w-1/2">
@@ -279,8 +231,8 @@ const Register = () => {
                                 onChange={(e) => {
                                     setPassword(e.target.value);
                                     if (passwordErr) setPasswordErr("");
-                                    // لو كان في mismatch، رجّع فحص confirm خفيف
-                                    if (confirmPasswordErr && confirmPassword === e.target.value) setConfirmPasswordErr("");
+                                    if (confirmPasswordErr && confirmPassword === e.target.value)
+                                        setConfirmPasswordErr("");
                                 }}
                                 type="password"
                                 placeholder="••••••••"
@@ -311,7 +263,7 @@ const Register = () => {
                             type="submit"
                             className="w-full bg-[#1A5CFF] hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 transition duration-300"
                         >
-                            REGISTER AS {role.toUpperCase()}
+                            REGISTER
                         </button>
                     </form>
                 </div>
