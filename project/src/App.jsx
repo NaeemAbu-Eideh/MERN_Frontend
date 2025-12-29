@@ -10,6 +10,8 @@ import Stadiums from "./Components/Stadiums";
 import Home from "./Components/Home";
 import AdminDashboard from "./Components/Admin.jsx";
 import {getUsers} from "./methods/functions/user_functions.jsx";
+import TournamentDetails from "./Components/TournamentDetails.jsx";
+import AddTournament from "./Components/addTournament.jsx";
 
 const ProtectedRoute = ({isLoggedIn, children}) => {
     if (!isLoggedIn) return <Navigate to="/login" replace/>;
@@ -47,8 +49,9 @@ function App() {
                     <Route path="/stadiums" element={<ProtectedRoute isLoggedIn={isLoggedIn}><Stadiums/></ProtectedRoute>}/>
                     <Route path="/home" element={<Home isLoggedIn={isLoggedIn} allUsers={allUsers} />}/>
                     <Route path="/admin" element={<AdminRoute isLoggedIn={isLoggedIn} user={user}><AdminDashboard/></AdminRoute>}/>
+                    <Route path="/tournaments/:id" element={<TournamentDetails/>} />
+                    <Route path="/admin/tournaments/new" element={<AddTournament />} />
                     <Route path="*" element={<Navigate to="/home" replace/>}/>
-                    <Route path="/tournaments/:id" element={<TournamentDetails />} />
                 </Routes>
             </div>
         </>);

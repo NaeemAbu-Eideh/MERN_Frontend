@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {useMemo, useState} from "react";
 import {
     FaPlus,
     FaTrophy,
@@ -11,6 +11,7 @@ import {
     FaEye,
     FaCheckCircle,
 } from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 
 const tournamentsSeed = [
     {
@@ -32,33 +33,34 @@ const tournamentsSeed = [
 ];
 
 const matchesSeed = [
-    { id: 1, name: "Match #01", tournament: "Summer Championship 2024", time: "18:00", status: "Scheduled" },
-    { id: 2, name: "Match #02", tournament: "Winter Cup 2024", time: "20:30", status: "Scheduled" },
+    {id: 1, name: "Match #01", tournament: "Summer Championship 2024", time: "18:00", status: "Scheduled"},
+    {id: 2, name: "Match #02", tournament: "Winter Cup 2024", time: "20:30", status: "Scheduled"},
 ];
 
 const stadiumsSeed = [
-    { id: 1, name: "Central Stadium - Field A", location: "Downtown District", status: "Available" },
-    { id: 2, name: "North Arena Complex", location: "North Quarter", status: "Available" },
+    {id: 1, name: "Central Stadium - Field A", location: "Downtown District", status: "Available"},
+    {id: 2, name: "North Arena Complex", location: "North Quarter", status: "Available"},
 ];
 
 const joinRequestsSeed = [
-    { id: 1, user: "Ahmad Ali", tournament: "Winter Cup 2024", status: "Pending" },
-    { id: 2, user: "Lina Naser", tournament: "Summer Championship 2024", status: "Pending" },
+    {id: 1, user: "Ahmad Ali", tournament: "Winter Cup 2024", status: "Pending"},
+    {id: 2, user: "Lina Naser", tournament: "Summer Championship 2024", status: "Pending"},
 ];
 
-const StatCard = ({ value, label, icon: Icon }) => (
+const StatCard = ({value, label, icon: Icon}) => (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex items-center justify-between">
         <div>
             <div className="text-4xl font-extrabold text-black leading-none">{value}</div>
             <div className="mt-2 text-xs font-bold tracking-widest text-gray-400 uppercase">{label}</div>
         </div>
-        <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400">
-            <Icon className="text-xl" />
+        <div
+            className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-400">
+            <Icon className="text-xl"/>
         </div>
     </div>
 );
 
-const TabButton = ({ active, children, onClick }) => (
+const TabButton = ({active, children, onClick}) => (
     <button
         onClick={onClick}
         className={`px-6 py-4 text-sm font-extrabold tracking-wide uppercase border-b-2 transition-colors ${
@@ -70,7 +72,7 @@ const TabButton = ({ active, children, onClick }) => (
     </button>
 );
 
-const Pill = ({ text }) => {
+const Pill = ({text}) => {
     const isActive = text.toLowerCase() === "active";
     const isPending = text.toLowerCase() === "pending";
     const isDraft = text.toLowerCase() === "draft";
@@ -86,7 +88,7 @@ const Pill = ({ text }) => {
     return <span className={`text-xs font-bold px-3 py-1 rounded-full border ${cls}`}>{text}</span>;
 };
 
-const ActionIconBtn = ({ onClick, title, children, danger }) => (
+const ActionIconBtn = ({onClick, title, children, danger}) => (
     <button
         onClick={onClick}
         title={title}
@@ -101,7 +103,7 @@ const ActionIconBtn = ({ onClick, title, children, danger }) => (
     </button>
 );
 
-const ActionPrimaryBtn = ({ onClick, children }) => (
+const ActionPrimaryBtn = ({onClick, children}) => (
     <button
         onClick={onClick}
         type="button"
@@ -112,6 +114,7 @@ const ActionPrimaryBtn = ({ onClick, children }) => (
 );
 
 export default function AdminDashboard() {
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState("tournaments");
 
     const [tournaments, setTournaments] = useState(tournamentsSeed);
@@ -134,21 +137,6 @@ export default function AdminDashboard() {
         alert("Create New (hook it to your modal/route)");
     };
 
-    const handleAddTournament = () => {
-        const nextId = Math.max(...tournaments.map((t) => t.id)) + 1;
-        setTournaments((prev) => [
-            ...prev,
-            {
-                id: nextId,
-                title: `New Tournament #${nextId}`,
-                startDate: "TBD",
-                endDate: "TBD",
-                participants: 0,
-                status: "Draft",
-            },
-        ]);
-        setActiveTab("tournaments");
-    };
 
     const handleDeleteTournament = (id) => {
         setTournaments((prev) => prev.filter((t) => t.id !== id));
@@ -156,7 +144,7 @@ export default function AdminDashboard() {
 
     const handleApproveRequest = (id) => {
         setJoinRequests((prev) =>
-            prev.map((r) => (r.id === id ? { ...r, status: "Approved" } : r))
+            prev.map((r) => (r.id === id ? {...r, status: "Approved"} : r))
         );
     };
 
@@ -178,18 +166,18 @@ export default function AdminDashboard() {
                         type="button"
                         className="h-14 px-8 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold tracking-wide uppercase flex items-center gap-3 shadow-sm"
                     >
-                        <FaPlus />
+                        <FaPlus/>
                         Create New
                     </button>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-8">
-                    <StatCard value={stats.tournaments} label="Tournaments" icon={FaTrophy} />
-                    <StatCard value={stats.matches} label="Matches" icon={FaRegCalendarAlt} />
-                    <StatCard value={stats.stadiums} label="Stadiums" icon={FaMapMarkerAlt} />
-                    <StatCard value={stats.pending} label="Pending Requests" icon={FaClock} />
-                    <StatCard value={stats.participants} label="Total Participants" icon={FaUsers} />
+                    <StatCard value={stats.tournaments} label="Tournaments" icon={FaTrophy}/>
+                    <StatCard value={stats.matches} label="Matches" icon={FaRegCalendarAlt}/>
+                    <StatCard value={stats.stadiums} label="Stadiums" icon={FaMapMarkerAlt}/>
+                    <StatCard value={stats.pending} label="Pending Requests" icon={FaClock}/>
+                    <StatCard value={stats.participants} label="Total Participants" icon={FaUsers}/>
                 </div>
 
                 {/* Tabs */}
@@ -219,11 +207,14 @@ export default function AdminDashboard() {
                             </h2>
 
                             <button
-                                onClick={handleAddTournament}
+                                onClick={() => {
+                                    navigate("/admin/tournaments/new");
+                                    setActiveTab("tournaments");
+                                }}
                                 type="button"
                                 className="h-12 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold tracking-wide uppercase flex items-center gap-3 shadow-sm w-fit"
                             >
-                                <FaPlus />
+                                <FaPlus/>
                                 Add Tournament
                             </button>
                         </div>
@@ -236,33 +227,35 @@ export default function AdminDashboard() {
                                 >
                                     <div className="flex items-center gap-5">
                                         {/* Placeholder icon */}
-                                        <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center">
+                                        <div
+                                            className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center">
                                             <span className="text-gray-400 font-extrabold text-lg">T</span>
                                         </div>
 
                                         <div>
                                             <div className="text-xl font-extrabold text-gray-900">{t.title}</div>
-                                            <div className="mt-1 flex flex-wrap items-center gap-4 text-sm text-gray-500 font-semibold">
+                                            <div
+                                                className="mt-1 flex flex-wrap items-center gap-4 text-sm text-gray-500 font-semibold">
                         <span className="flex items-center gap-2">
-                          <FaRegCalendarAlt className="text-gray-400" />
+                          <FaRegCalendarAlt className="text-gray-400"/>
                             {t.startDate} - {t.endDate}
                         </span>
                                                 <span className="flex items-center gap-2">
-                          <FaUsers className="text-gray-400" />
+                          <FaUsers className="text-gray-400"/>
                                                     {t.participants} Participants
                         </span>
-                                                <Pill text={t.status} />
+                                                <Pill text={t.status}/>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3 justify-end">
                                         <ActionIconBtn title="Edit" onClick={() => alert(`Edit tournament #${t.id}`)}>
-                                            <FaEdit />
+                                            <FaEdit/>
                                         </ActionIconBtn>
 
                                         <ActionPrimaryBtn onClick={() => alert(`View tournament #${t.id}`)}>
-                                            <FaEye />
+                                            <FaEye/>
                                             View
                                         </ActionPrimaryBtn>
 
@@ -271,7 +264,7 @@ export default function AdminDashboard() {
                                             danger
                                             onClick={() => handleDeleteTournament(t.id)}
                                         >
-                                            <FaTrash />
+                                            <FaTrash/>
                                         </ActionIconBtn>
                                     </div>
                                 </div>
@@ -283,13 +276,14 @@ export default function AdminDashboard() {
                 {activeTab === "matches" && (
                     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-2xl font-extrabold uppercase tracking-wide text-black">Manage Matches</h2>
+                            <h2 className="text-2xl font-extrabold uppercase tracking-wide text-black">Manage
+                                Matches</h2>
                             <button
                                 type="button"
                                 onClick={() => alert("Add Match")}
                                 className="h-12 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold tracking-wide uppercase flex items-center gap-3 shadow-sm"
                             >
-                                <FaPlus />
+                                <FaPlus/>
                                 Add Match
                             </button>
                         </div>
@@ -303,20 +297,22 @@ export default function AdminDashboard() {
                                     <div>
                                         <div className="text-lg font-extrabold text-gray-900">{m.name}</div>
                                         <div className="mt-1 text-sm text-gray-500 font-semibold">
-                                            {m.tournament} • {m.time} • <span className="text-gray-700">{m.status}</span>
+                                            {m.tournament} • {m.time} • <span
+                                            className="text-gray-700">{m.status}</span>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3 justify-end">
                                         <ActionIconBtn title="Edit" onClick={() => alert(`Edit match #${m.id}`)}>
-                                            <FaEdit />
+                                            <FaEdit/>
                                         </ActionIconBtn>
                                         <ActionPrimaryBtn onClick={() => alert(`View match #${m.id}`)}>
-                                            <FaEye />
+                                            <FaEye/>
                                             View
                                         </ActionPrimaryBtn>
-                                        <ActionIconBtn title="Delete" danger onClick={() => alert(`Delete match #${m.id}`)}>
-                                            <FaTrash />
+                                        <ActionIconBtn title="Delete" danger
+                                                       onClick={() => alert(`Delete match #${m.id}`)}>
+                                            <FaTrash/>
                                         </ActionIconBtn>
                                     </div>
                                 </div>
@@ -328,13 +324,14 @@ export default function AdminDashboard() {
                 {activeTab === "stadiums" && (
                     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
                         <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-2xl font-extrabold uppercase tracking-wide text-black">Manage Stadiums</h2>
+                            <h2 className="text-2xl font-extrabold uppercase tracking-wide text-black">Manage
+                                Stadiums</h2>
                             <button
                                 type="button"
                                 onClick={() => alert("Add Stadium")}
                                 className="h-12 px-6 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold tracking-wide uppercase flex items-center gap-3 shadow-sm"
                             >
-                                <FaPlus />
+                                <FaPlus/>
                                 Add Stadium
                             </button>
                         </div>
@@ -347,21 +344,23 @@ export default function AdminDashboard() {
                                 >
                                     <div>
                                         <div className="text-lg font-extrabold text-gray-900">{s.name}</div>
-                                        <div className="mt-2 flex items-center gap-2 text-sm text-gray-500 font-semibold">
-                                            <FaMapMarkerAlt className="text-gray-400" />
+                                        <div
+                                            className="mt-2 flex items-center gap-2 text-sm text-gray-500 font-semibold">
+                                            <FaMapMarkerAlt className="text-gray-400"/>
                                             {s.location}
                                         </div>
                                         <div className="mt-3">
-                                            <Pill text={s.status} />
+                                            <Pill text={s.status}/>
                                         </div>
                                     </div>
 
                                     <div className="flex items-center gap-3">
                                         <ActionIconBtn title="Edit" onClick={() => alert(`Edit stadium #${s.id}`)}>
-                                            <FaEdit />
+                                            <FaEdit/>
                                         </ActionIconBtn>
-                                        <ActionIconBtn title="Delete" danger onClick={() => alert(`Delete stadium #${s.id}`)}>
-                                            <FaTrash />
+                                        <ActionIconBtn title="Delete" danger
+                                                       onClick={() => alert(`Delete stadium #${s.id}`)}>
+                                            <FaTrash/>
                                         </ActionIconBtn>
                                     </div>
                                 </div>
@@ -390,7 +389,7 @@ export default function AdminDashboard() {
                                             Requested to join: <span className="text-gray-800">{r.tournament}</span>
                                         </div>
                                         <div className="mt-3">
-                                            <Pill text={r.status} />
+                                            <Pill text={r.status}/>
                                         </div>
                                     </div>
 
@@ -401,7 +400,7 @@ export default function AdminDashboard() {
                                             className="h-11 px-5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-extrabold text-sm tracking-wide uppercase flex items-center gap-2"
                                             disabled={r.status !== "Pending"}
                                         >
-                                            <FaCheckCircle />
+                                            <FaCheckCircle/>
                                             Approve
                                         </button>
 
@@ -410,7 +409,7 @@ export default function AdminDashboard() {
                                             danger
                                             onClick={() => alert(`Reject/Delete request #${r.id}`)}
                                         >
-                                            <FaTrash />
+                                            <FaTrash/>
                                         </ActionIconBtn>
                                     </div>
                                 </div>

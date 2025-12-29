@@ -20,7 +20,7 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, setUser, user }) {
                     <FaTrophy className="text-lg" />
                 </div>
                 <span className="text-xl font-extrabold text-blue-700 tracking-tight">
-          TOURNAMENT ORGANIZER
+          La3eeb
         </span>
             </Link>
 
