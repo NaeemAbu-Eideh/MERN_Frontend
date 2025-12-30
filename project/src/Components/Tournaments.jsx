@@ -4,14 +4,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export default function Tournaments() {
+
+
     const [tournamentsData, setTournamentsData] = useState([]);
-
-    // ✅ Search state
     const [searchTerm, setSearchTerm] = useState("");
-
-    // ✅ Pagination
     const [currentPage, setCurrentPage] = useState(1);
-    const pageSize = 6; // 6 tournaments per page
+    const pageSize = 6;
 
     useEffect(() => {
         const getAllTournaments = async () => {
@@ -22,9 +20,6 @@ export default function Tournaments() {
         getAllTournaments();
     }, []);
 
-    // ✅ FILTERING (Search)
-    // هاي الفلترة بتفلتر التورنمنتس حسب العنوان (title).
-    // إذا بدك توسّعها لاحقًا (sportType/status) بتضيف OR conditions هون.
     const filteredTournaments = useMemo(() => {
         const q = searchTerm.trim().toLowerCase();
         if (!q) return tournamentsData;
@@ -34,7 +29,6 @@ export default function Tournaments() {
         );
     }, [tournamentsData, searchTerm]);
 
-    // ✅ لما تتغير نتيجة البحث، رجّع المستخدم لأول صفحة
     useEffect(() => {
         setCurrentPage(1);
     }, [searchTerm]);

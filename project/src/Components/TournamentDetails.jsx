@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
     FaCalendarAlt,
     FaTrophy,
@@ -8,14 +8,27 @@ import {
     FaArrowLeft,
     FaShieldAlt,
     FaUserFriends,
+    FaRobot,
+    FaTimes,
+    FaCopy,
 } from "react-icons/fa";
 import axios from "axios";
 
 export default function TournamentDetails() {
+    const navigate = useNavigate();
     const { id } = useParams();
+
+    const [joinLoading, setJoinLoading] = useState(false);
+    const [joinMsg, setJoinMsg] = useState("");
 
     const [tournament, setTournament] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // ✅ AI Summary states
+    const [summaryOpen, setSummaryOpen] = useState(false);
+    const [summaryLoading, setSummaryLoading] = useState(false);
+    const [summaryText, setSummaryText] = useState("");
+    const [summaryErr, setSummaryErr] = useState("");
 
     // ✅ Get logged-in user from localStorage (same place you stored it after login)
     const authUser = JSON.parse(localStorage.getItem("auth_user") || "null");
@@ -37,6 +50,69 @@ export default function TournamentDetails() {
         getTournament();
     }, [id]);
 
+    const handleJoinRequest = async () => {
+        if (!authUser?._id) {
+            setJoinMsg("Please login first.");
+            return;
+        }
+
+        if (!tournament) return;
+
+        if (tournament.status !== "open") {
+            setJoinMsg("Registration is closed.");
+            return;
+        }
+
+        setJoinLoading(true);
+        setJoinMsg("");
+
+        try {
+            let requestType = "solo";
+            let teamId = null;
+
+            // ✅ إذا mode team أو both: جيب teams تبعون اليوزر
+            if (tournament.mode === "team" || tournament.mode === "both") {
+                const teamsRes = await axios.get(
+                    `http://localhost:8008/api/my-teams/${authUser._id}`
+                );
+                const myTeams = teamsRes?.data?.data ?? teamsRes?.data ?? [];
+
+                if (Array.isArray(myTeams) && myTeams.length > 0) {
+                    teamId = myTeams[0]._id;
+                }
+
+                if (tournament.mode === "team" && !teamId) {
+                    setJoinMsg("You must have a team to join this tournament.");
+                    return;
+                }
+
+                if (tournament.mode === "both" && teamId) {
+                    requestType = "team";
+                }
+            }
+
+            if (tournament.mode === "team") {
+                requestType = "team";
+            }
+
+            const payload = {
+                tournamentId: tournament._id || id,
+                requestType,
+                userId: authUser._id,
+                ...(requestType === "team" ? { teamId } : {}),
+            };
+
+            await axios.post("http://localhost:8008/api/createjoin", payload);
+
+            setJoinMsg("✅ Join request sent! (pending)");
+        } catch (err) {
+            console.log("Join request error:", err?.response?.data || err);
+            setJoinMsg(err?.response?.data?.message || "❌ Failed to send join request.");
+        } finally {
+            setJoinLoading(false);
+        }
+    };
+
     const formatDate = (dateString) => {
         if (!dateString) return "—";
         const options = { year: "numeric", month: "long", day: "numeric" };
@@ -55,6 +131,52 @@ export default function TournamentDetails() {
                 return "bg-yellow-100 text-yellow-700 border-yellow-200";
             default:
                 return "bg-gray-100 text-gray-600 border-gray-200";
+        }
+    };
+
+    // ✅ AI Summary handler
+    const handleOpenSummary = async () => {
+        if (!tournament) return;
+
+        setSummaryOpen(true);
+        setSummaryErr("");
+
+        // لو في نص موجود، ما تعيد توليده (اختياري)
+        if (summaryText) return;
+
+        setSummaryLoading(true);
+        setSummaryText("");
+
+        try {
+            const object = {
+                rule: tournament.rules,
+                startDate: tournament.startDate,
+                endDate: tournament.endDate,
+                sportType: tournament.sportType,
+                mode: tournament.mode,
+                duration: durationDays,
+            };
+
+            const res = await axios.post('http://localhost:8008/api/ai/chat', object);
+
+            const text = res?.data?.text || "";
+            if (!text) throw new Error("Empty summary response");
+
+            setSummaryText(text);
+        } catch (err) {
+            console.log("AI summary error:", err?.response?.data || err);
+            setSummaryErr(err?.response?.data?.error || err?.message || "Failed to generate summary.");
+        } finally {
+            setSummaryLoading(false);
+        }
+    };
+
+    const handleCopySummary = async () => {
+        try {
+            if (!summaryText) return;
+            await navigator.clipboard.writeText(summaryText);
+        } catch (e) {
+            console.log(e);
         }
     };
 
@@ -126,9 +248,13 @@ export default function TournamentDetails() {
                             </h1>
                         </div>
 
-                        {/* ✅ Show Edit button ONLY for admin users */}
                         {isAdmin && (
-                            <button className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-900 transition">
+                            <button
+                                className="bg-gray-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-900 transition"
+                                onClick={() => {
+                                    navigate("/tournaments/" + id + "/edit");
+                                }}
+                            >
                                 Edit Tournament
                             </button>
                         )}
@@ -192,8 +318,12 @@ export default function TournamentDetails() {
                         </div>
 
                         {tournament.status === "open" ? (
-                            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-blue-200 shadow-lg">
-                                JOIN TOURNAMENT
+                            <button
+                                onClick={handleJoinRequest}
+                                disabled={joinLoading}
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-blue-200 shadow-lg disabled:opacity-50"
+                            >
+                                {joinLoading ? "SENDING..." : "JOIN TOURNAMENT"}
                             </button>
                         ) : (
                             <button
@@ -207,6 +337,10 @@ export default function TournamentDetails() {
                         <p className="text-center text-xs text-gray-400 mt-4">
                             By joining, you agree to the rules and terms.
                         </p>
+
+                        {joinMsg && (
+                            <p className="text-center text-sm font-bold mt-3 text-gray-700">{joinMsg}</p>
+                        )}
                     </div>
 
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
@@ -241,6 +375,7 @@ export default function TournamentDetails() {
                         </div>
                     </div>
 
+                    {/* ORGANIZED BY CARD */}
                     <div className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold">
@@ -255,8 +390,68 @@ export default function TournamentDetails() {
                             </div>
                         </div>
                     </div>
+
+                    {/* ✅ BUTTON UNDER ORGANIZED BY */}
+                    <button
+                        onClick={handleOpenSummary}
+                        className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-black text-white font-bold py-3 rounded-xl transition"
+                    >
+                        <FaRobot /> Generate Summary
+                    </button>
                 </div>
             </div>
+
+            {/* ✅ SUMMARY MODAL */}
+            {summaryOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                    <div
+                        className="absolute inset-0 bg-black/40"
+                        onClick={() => setSummaryOpen(false)}
+                    ></div>
+
+                    <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-extrabold text-gray-900 flex items-center gap-2">
+                                <FaRobot className="text-gray-800" /> Tournament Summary
+                            </h3>
+                            <button
+                                onClick={() => setSummaryOpen(false)}
+                                className="p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+                                aria-label="Close"
+                            >
+                                <FaTimes />
+                            </button>
+                        </div>
+
+                        {summaryLoading ? (
+                            <div className="text-gray-500 font-bold">Generating...</div>
+                        ) : summaryErr ? (
+                            <div className="text-red-600 font-bold text-sm">{summaryErr}</div>
+                        ) : (
+                            <div className="text-gray-700 whitespace-pre-line leading-relaxed">
+                                {summaryText || "No summary yet."}
+                            </div>
+                        )}
+
+                        <div className="mt-6 flex items-center justify-end gap-2">
+                            <button
+                                onClick={() => setSummaryOpen(false)}
+                                className="px-4 py-2 rounded-xl font-bold bg-gray-100 hover:bg-gray-200 text-gray-800"
+                            >
+                                Close
+                            </button>
+
+                            <button
+                                onClick={handleCopySummary}
+                                disabled={!summaryText}
+                                className="px-4 py-2 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50 flex items-center gap-2"
+                            >
+                                <FaCopy /> Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

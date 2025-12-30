@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function AddTournament() {
     const navigate = useNavigate();
 
-    // ✅ افترضنا إنك مخزن اليوزر بعد اللوجين
     const authUser = JSON.parse(localStorage.getItem("auth_user") || "null");
 
     const [form, setForm] = useState({
@@ -39,11 +38,11 @@ export default function AddTournament() {
                 title: form.title.trim(),
                 sportType: form.sportType.trim(),
                 mode: form.mode,
-                startDate: form.startDate, // YYYY-MM-DD from input
+                startDate: form.startDate,
                 endDate: form.endDate,
                 status: form.status,
                 rules: form.rules,
-                createdByAdminId: authUser?._id, // ✅ مهم
+                createdByAdminId: authUser?._id,
                 // حسب المود
                 maxTeams: form.mode === "team" ? Number(form.maxTeams) : null,
                 maxParticipants: form.mode === "solo" ? Number(form.maxParticipants) : null,
@@ -53,11 +52,9 @@ export default function AddTournament() {
 
             const res = await axios.post("http://localhost:8008/api/createTournament", payload);
 
-            // روح على صفحة التفاصيل بعد الإضافة
             navigate(`/tournaments/${res.data._id}`);
         } catch (err) {
             if (err.response?.status === 422) {
-                // express-validator mapped
                 setErrors(err.response.data?.errors || {});
             } else {
                 console.log(err);
@@ -90,14 +87,12 @@ export default function AddTournament() {
                 </div>
 
                 <form onSubmit={onSubmit} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 space-y-6">
-                    {/* Title */}
                     <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Title</label>
                         <input name="title" value={form.title} onChange={onChange} className={input} placeholder="Tournament title" />
                         {errors.title?.msg && <p className={errText}>{errors.title.msg}</p>}
                     </div>
 
-                    {/* SportType */}
                     <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Sport Type</label>
                         <input
@@ -110,7 +105,6 @@ export default function AddTournament() {
                         {errors.sportType?.msg && <p className={errText}>{errors.sportType.msg}</p>}
                     </div>
 
-                    {/* Mode + Status */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Mode</label>
@@ -134,7 +128,6 @@ export default function AddTournament() {
                         </div>
                     </div>
 
-                    {/* Dates */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Start Date</label>
@@ -149,7 +142,6 @@ export default function AddTournament() {
                         </div>
                     </div>
 
-                    {/* Limits */}
                     {form.mode === "team" && (
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Max Teams</label>
@@ -166,7 +158,6 @@ export default function AddTournament() {
                         </div>
                     )}
 
-                    {/* Rules */}
                     <div>
                         <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Rules</label>
                         <textarea

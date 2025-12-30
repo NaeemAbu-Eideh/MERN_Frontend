@@ -14,7 +14,7 @@ export default function Home({ isLoggedIn }) {
                 const [tRes, sRes, uRes] = await Promise.all([
                     axios.get("http://localhost:8008/api/tournaments"),
                     axios.get("http://localhost:8008/api/stadiums"),
-                    axios.get("http://localhost:8008/api/users/count"), // ✅ لازم تعملها بالباك اند
+                    axios.get("http://localhost:8008/api/users/count"),
                 ]);
 
                 setTournaments(tRes.data || []);
@@ -23,7 +23,6 @@ export default function Home({ isLoggedIn }) {
             } catch (err) {
                 console.log(err);
 
-                // fallback عشان الصفحة ما تطيح
                 setTournaments((prev) => prev || []);
                 setStadiums((prev) => prev || []);
                 setUsersCount(0);
@@ -39,12 +38,12 @@ export default function Home({ isLoggedIn }) {
                 const [tRes, sRes, uRes] = await Promise.all([
                     axios.get("http://localhost:8008/api/tournaments"),
                     axios.get("http://localhost:8008/api/stadiums"),
-                    axios.get("http://localhost:8008/api/users"), // ✅ موجود عندك
+                    axios.get("http://localhost:8008/api/users"),
                 ]);
 
                 setTournaments(tRes.data || []);
                 setStadiums(sRes.data || []);
-                setUsersCount(Array.isArray(uRes.data) ? uRes.data.length : 0); // ✅ العدد من DB
+                setUsersCount(Array.isArray(uRes.data) ? uRes.data.length : 0);
             } catch (err) {
                 console.log(err);
                 setTournaments([]);
@@ -56,11 +55,13 @@ export default function Home({ isLoggedIn }) {
         fetchData();
     }, []);
 
+
     const featuredTournaments = useMemo(() => {
         if (!tournaments.length) return [];
         const shuffled = [...tournaments].sort(() => Math.random() - 0.5);
         return shuffled.slice(0, 3);
     }, [tournaments]);
+
 
     const formatRange = (start, end) => {
         const opts = { year: "numeric", month: "short", day: "numeric" };
