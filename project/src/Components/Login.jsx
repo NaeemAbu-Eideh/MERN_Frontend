@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FaUser} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -9,6 +9,15 @@ export default function Login({ setUser, setIsLoggedIn }) {
     const [password, setPassword] = useState("");
     const [emailErr, setEmailErr] = useState("");
     const [passwordErr, setPasswordErr] = useState("");
+
+    useEffect(() => {
+        const stored = localStorage.getItem("auth_user");
+        if (stored) {
+            const parsedUser = JSON.parse(stored);
+            setUser(parsedUser);
+            setIsLoggedIn(true);
+        }
+    }, []);
 
     const clearErrors = () => {
         setEmailErr("");
@@ -33,9 +42,8 @@ export default function Login({ setUser, setIsLoggedIn }) {
         try {
             const res = await axios.post("http://localhost:8008/api/login", user);
             console.log("LOGIN SUCCESS:", res.data);
-
+            localStorage.setItem("auth_token", res.data.token);
             localStorage.setItem("auth_user", JSON.stringify(res.data.user));
-
             setUser(res.data.user);
             setIsLoggedIn(true);
             navigate(res.data.user.role === "admin" ? "/admin" : "/home");

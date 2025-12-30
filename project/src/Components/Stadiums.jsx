@@ -1,17 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { FaMapMarkerAlt, FaUsers, FaRegCalendarAlt, FaSearch } from "react-icons/fa";
+import React, {useEffect, useMemo, useState} from "react";
+import {FaMapMarkerAlt, FaUsers, FaRegCalendarAlt, FaSearch} from "react-icons/fa";
 import axios from "axios";
 
 export default function Stadiums() {
+
     const [stadiumsData, setStadiumsData] = useState([]);
-
-    // ✅ Search
     const [searchTerm, setSearchTerm] = useState("");
-
-    // ✅ Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 2;
-
     useEffect(() => {
         const getAllStadiums = async () => {
             const res = await axios.get("http://localhost:8008/api/stadiums");
@@ -21,8 +17,6 @@ export default function Stadiums() {
         getAllStadiums();
     }, []);
 
-    // ✅ FILTERING (Search)
-    // فلترة بسيطة حسب name أو city
     const filteredStadiums = useMemo(() => {
         const q = searchTerm.trim().toLowerCase();
         if (!q) return stadiumsData;
@@ -62,9 +56,8 @@ export default function Stadiums() {
                 </div>
             </div>
 
-            {/* ✅ Search bar ONLY */}
             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex items-center gap-3 mb-8">
-                <FaSearch className="text-gray-400" />
+                <FaSearch className="text-gray-400"/>
                 <input
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -73,9 +66,6 @@ export default function Stadiums() {
                     className="w-full py-2.5 px-2 focus:outline-none text-sm placeholder-gray-400"
                 />
             </div>
-
-            {/* (Comment) Filters */}
-            {/* لو بدك Filters (status/capacity/facilities/city) بتنعمل هون بنفس فكرة filteredStadiums */}
 
             <div className="flex justify-between items-center mb-6">
                 <div className="text-gray-500 text-sm">
@@ -100,30 +90,31 @@ export default function Stadiums() {
                         <div className="p-6">
                             <div className="flex justify-between items-start mb-4">
                                 <h3 className="text-lg font-bold text-gray-900">{stadium.name}</h3>
-                                <span className={`text-xs font-bold px-3 py-1 rounded-full border ${statusClass(stadium.status)}`}>
+                                <span
+                                    className={`text-xs font-bold px-3 py-1 rounded-full border ${statusClass(stadium.status)}`}>
                   {stadium.status}
                 </span>
                             </div>
 
                             <div className="space-y-3 mb-6">
                                 <div className="flex items-center text-gray-600 text-sm font-medium">
-                                    <FaMapMarkerAlt className="mr-3 text-gray-400 text-lg" />
+                                    <FaMapMarkerAlt className="mr-3 text-gray-400 text-lg"/>
                                     {stadium.city || "—"}
                                 </div>
 
                                 <div className="flex items-center text-gray-600 text-sm font-medium">
-                                    <FaUsers className="mr-3 text-gray-400 text-lg" />
+                                    <FaUsers className="mr-3 text-gray-400 text-lg"/>
                                     {stadium.capacity ? `${stadium.capacity} seats` : "—"}
                                 </div>
 
                                 <div className="flex items-center text-gray-600 text-sm font-medium">
-                                    <FaRegCalendarAlt className="mr-3 text-gray-400 text-lg" />
+                                    <FaRegCalendarAlt className="mr-3 text-gray-400 text-lg"/>
                                     {/* ما عندك bookings بالـ schema، خليها placeholder */}
                                     0 Active Bookings
                                 </div>
                             </div>
 
-                            <hr className="border-gray-100 mb-4" />
+                            <hr className="border-gray-100 mb-4"/>
 
                             <div>
                                 <span className="block text-xs text-gray-400 font-semibold mb-1">Facilities:</span>
@@ -136,7 +127,6 @@ export default function Stadiums() {
                 ))}
             </div>
 
-            {/* ✅ pagination controls */}
             <div className="flex justify-center items-center gap-3 mt-8">
                 <button
                     className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold disabled:opacity-40"

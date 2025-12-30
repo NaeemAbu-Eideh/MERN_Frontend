@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { FaUser } from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
+
     const navigate = useNavigate();
-    // values
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
-    // errors
     const [firstNameErr, setFirstNameErr] = useState("");
     const [lastNameErr, setLastNameErr] = useState("");
     const [emailErr, setEmailErr] = useState("");
@@ -132,7 +131,6 @@ const Register = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
             <div className="flex flex-col md:flex-row bg-white rounded-3xl shadow-2xl overflow-hidden max-w-5xl w-full min-h-[600px]">
-                {/* LEFT */}
                 <div className="w-full md:w-1/2 bg-[#F0F6FF] p-10 flex flex-col justify-center">
                     <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                         <FaUser className="text-white text-3xl" />
@@ -148,7 +146,6 @@ const Register = () => {
                     </p>
                 </div>
 
-                {/* RIGHT */}
                 <div className="w-full md:w-1/2 bg-white p-10 md:p-12 flex flex-col justify-center">
                     <div className="flex mb-6">
                         <Link
@@ -166,7 +163,7 @@ const Register = () => {
                     </div>
 
                     <form onSubmit={onSubmit}>
-                        {/* NAMES */}
+
                         <div className="flex gap-4 mb-4">
                             <div className="w-1/2">
                                 <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">
@@ -203,7 +200,6 @@ const Register = () => {
                             </div>
                         </div>
 
-                        {/* EMAIL */}
                         <div className="mb-4">
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">
                                 Email
@@ -221,7 +217,6 @@ const Register = () => {
                             {emailErr && <p className={errText}>{emailErr}</p>}
                         </div>
 
-                        {/* PASSWORD */}
                         <div className="mb-4">
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">
                                 Password
@@ -241,7 +236,6 @@ const Register = () => {
                             {passwordErr && <p className={errText}>{passwordErr}</p>}
                         </div>
 
-                        {/* CONFIRM */}
                         <div className="mb-6">
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">
                                 Confirm Password
