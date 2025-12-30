@@ -13,6 +13,7 @@ import {
     FaCopy,
 } from "react-icons/fa";
 import axios from "axios";
+import {sendPostToAi} from "../methods/functions/ai.jsx";
 
 export default function TournamentDetails() {
     const navigate = useNavigate();
