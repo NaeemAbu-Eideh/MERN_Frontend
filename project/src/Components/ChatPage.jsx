@@ -117,7 +117,6 @@ export default function ChatPage() {
     return (
         <div className="min-h-[calc(100vh-80px)] bg-gray-50 p-6">
             <div className="max-w-3xl mx-auto bg-white border border-gray-200 rounded-2xl p-4 flex flex-col max-h-[80vh] overflow-y-scroll">
-                {/* Header */}
                 <div className="border-b border-gray-100 pb-3 mb-3 flex items-center justify-between">
                     <div>
                         <div className="text-lg font-extrabold text-gray-900">Chat</div>
@@ -125,8 +124,6 @@ export default function ChatPage() {
                     </div>
                     <div className="text-xs font-bold text-gray-400">{authUser?.role || "user"}</div>
                 </div>
-
-                {/* Messages */}
                 <div className="flex-1 overflow-y-auto space-y-2 pr-1">
                     {loading ? (
                         <div className="text-sm text-gray-500">Loading...</div>
@@ -157,7 +154,6 @@ export default function ChatPage() {
                     <div ref={bottomRef} />
                 </div>
 
-                {/* Input */}
                 <div className="pt-3 mt-3 border-t border-gray-100 flex gap-2">
                     <input
                         value={text}

@@ -32,7 +32,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, setUser, user }) {
 
     const isAdmin = isLoggedIn && user?.role === "admin";
 
-    // ✅ active checks
     const isUserChatActive = location.pathname === "/chat";
     const isAdminInboxActive = location.pathname === "/admin/chats";
 
@@ -73,7 +72,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, setUser, user }) {
                             active={location.pathname === "/stadiums"}
                         />
 
-                        {/* ✅ User sees CHAT only */}
                         {!isAdmin && (
                             <NavItem
                                 to="/chat"
@@ -83,7 +81,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, setUser, user }) {
                             />
                         )}
 
-                        {/* ✅ Admin sees INBOX only */}
                         {isAdmin && (
                             <NavItem
                                 to="/admin/chats"
@@ -93,7 +90,6 @@ export default function Navbar({ isLoggedIn, setIsLoggedIn, setUser, user }) {
                             />
                         )}
 
-                        {/* ✅ Optional: keep ADMIN dashboard link for admins */}
                         {isAdmin && (
                             <NavItem
                                 to="/admin"

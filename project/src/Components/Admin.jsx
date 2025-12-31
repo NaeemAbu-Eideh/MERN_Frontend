@@ -207,8 +207,6 @@ export default function AdminDashboard() {
         navigate(`/tournaments/${id}`);
     };
 
-    // ===== helpers to show match info as tournament + teamA vs teamB =====
-
     const tournamentTitleById = useMemo(() => {
         const map = new Map();
         tournaments.forEach((t) => map.set(String(t._id || t.id), t.title || "Untitled"));
@@ -227,9 +225,6 @@ export default function AdminDashboard() {
         return tournamentTitleById.get(String(tid)) || m.tournamentId?.title || "Unknown Tournament";
     };
 
-    // supports:
-    // - teamAId/teamBId
-    // - sideA.refId/sideB.refId
     const getTeamName = (m, which) => {
         const direct = which === "A" ? m.teamAId : m.teamBId;
         const directId = typeof direct === "string" ? direct : direct?._id;
@@ -294,7 +289,6 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* =============== TOURNAMENTS TAB =============== */}
                 {activeTab === "tournaments" && (
                     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -371,7 +365,6 @@ export default function AdminDashboard() {
                         />
                     </div>)}
 
-                {/* =============== MATCHES TAB (UPDATED) =============== */}
                 {activeTab === "matches" && (<div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
                         <div className="flex items-center justify-between mb-6">
                             <h2 className="text-2xl font-extrabold uppercase tracking-wide text-black">
@@ -433,7 +426,6 @@ export default function AdminDashboard() {
                         />
                     </div>)}
 
-                {/* =============== STADIUMS TAB =============== */}
                 {activeTab === "stadiums" && (
                     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
                         <div className="flex items-center justify-between mb-6">
@@ -488,7 +480,6 @@ export default function AdminDashboard() {
                         />
                     </div>)}
 
-                {/* =============== JOIN REQUESTS TAB =============== */}
                 {activeTab === "requests" && (
                     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
                         <div className="flex items-center justify-between mb-6">
