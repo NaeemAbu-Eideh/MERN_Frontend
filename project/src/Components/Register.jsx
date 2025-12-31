@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import { FaUser } from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
+import api from "./../contexts/axiosInstance.js"
 
 const Register = () => {
 
@@ -104,7 +105,7 @@ const Register = () => {
         };
 
         try {
-            await axios.post("http://localhost:8008/api/createUser", user);
+            await api.post("api/createUser", user);
 
             setFirstName("");
             setLastName("");

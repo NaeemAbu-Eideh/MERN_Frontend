@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaSave } from "react-icons/fa";
-
-const API_BASE = "http://localhost:8008/api";
+import api from "./../contexts/axiosInstance.js";
 
 // يحوّل Date/ISO string => yyyy-mm-dd عشان input date
 const toDateInput = (value) => {
@@ -44,7 +43,7 @@ export default function EditTournament() {
             setLoading(true);
             setError("");
             try {
-                const res = await axios.get(`${API_BASE}/tournaments/${id}`);
+                const res = await api.get(`api/tournaments/${id}`);
                 const t = res?.data?.data ?? res?.data ?? {};
 
                 setTitle(t.title ?? "");
@@ -118,7 +117,7 @@ export default function EditTournament() {
                 participantsTeams: [],
             };
 
-            await axios.put(`${API_BASE}/tournaments/${id}`, payload);
+            await api.put(`api/tournaments/${id}`, payload);
 
             navigate(`/tournaments/${id}`);
         } catch (err) {

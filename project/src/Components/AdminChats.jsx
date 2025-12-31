@@ -8,7 +8,7 @@ const EVENTS = {
 };
 
 export default function AdminChats() {
-    const [conversations, setConversations] = useState([]); // ✅ inbox list
+    const [conversations, setConversations] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [name, setName] = useState("");
 

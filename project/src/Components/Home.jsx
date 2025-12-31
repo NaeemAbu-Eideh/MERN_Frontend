@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTrophy, FaUsers, FaMapMarkerAlt, FaCalendarAlt, FaArrowRight } from "react-icons/fa";
-import axios from "axios";
+// import axios from "axios";
+import api from "./../contexts/axiosInstance.js"
 
 export default function Home({ isLoggedIn }) {
     const [tournaments, setTournaments] = useState([]);
@@ -12,9 +13,9 @@ export default function Home({ isLoggedIn }) {
         const fetchData = async () => {
             try {
                 const [tRes, sRes, uRes] = await Promise.all([
-                    axios.get("http://localhost:8008/api/tournaments"),
-                    axios.get("http://localhost:8008/api/stadiums"),
-                    axios.get("http://localhost:8008/api/users/count"),
+                    api.get("api/tournaments"),
+                    api.get("api/stadiums"),
+                    api.get("api/users/count"),
                 ]);
 
                 setTournaments(tRes.data || []);
@@ -36,9 +37,9 @@ export default function Home({ isLoggedIn }) {
         const fetchData = async () => {
             try {
                 const [tRes, sRes, uRes] = await Promise.all([
-                    axios.get("http://localhost:8008/api/tournaments"),
-                    axios.get("http://localhost:8008/api/stadiums"),
-                    axios.get("http://localhost:8008/api/users"),
+                    api.get("api/tournaments"),
+                    api.get("api/stadiums"),
+                    api.get("api/users"),
                 ]);
 
                 setTournaments(tRes.data || []);

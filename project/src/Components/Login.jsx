@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {FaUser} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import api from "./../contexts/axiosInstance.js"
 
 export default function Login({ setUser, setIsLoggedIn }) {
     const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Login({ setUser, setIsLoggedIn }) {
         };
 
         try {
-            const res = await axios.post("http://localhost:8008/api/login", user);
+            const res = await api.post("api/login", user);
             console.log("LOGIN SUCCESS:", res.data);
             localStorage.setItem("auth_token", res.data.token);
             localStorage.setItem("auth_user", JSON.stringify(res.data.user));

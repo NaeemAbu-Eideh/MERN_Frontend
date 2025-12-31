@@ -3,9 +3,10 @@ import {
     FaPlus, FaTrophy, FaRegCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaEdit, FaTrash, FaEye, FaCheckCircle,
 } from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import api from "../contexts/axiosInstance.js";
 
-const API_BASE = "http://localhost:8008/api";
+// const API_BASE = "http://localhost:8008/api";
 
 const StatCard = ({value, label, icon: Icon}) => (
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex items-center justify-between">
@@ -105,7 +106,7 @@ export default function AdminDashboard() {
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const results = await Promise.allSettled([axios.get(`${API_BASE}/tournaments`), axios.get(`${API_BASE}/matches`), axios.get(`${API_BASE}/stadiums`), axios.get(`${API_BASE}/join-requests`), axios.get(`${API_BASE}/teams`), // ✅ if you don't have this endpoint, remove this line + usage below
+                const results = await Promise.allSettled([api.get(`api/tournaments`), api.get(`api/matches`), api.get(`api/stadiums`), api.get(`api/join-requests`), api.get(`api/teams`), // ✅ if you don't have this endpoint, remove this line + usage below
                 ]);
 
                 const getData = (res) => res?.value?.data?.data ?? res?.value?.data ?? [];
@@ -154,7 +155,7 @@ export default function AdminDashboard() {
 
     const handleDeleteTournament = async (id) => {
         try {
-            await axios.delete(`${API_BASE}/tournaments/${id}`);
+            await api.delete(`api/tournaments/${id}`);
             setTournaments((prev) => prev.filter((t) => (t._id || t.id) !== id));
         } catch (err) {
             console.log("Delete tournament error:", err);
@@ -163,7 +164,7 @@ export default function AdminDashboard() {
 
     const handleApproveRequest = async (id) => {
         try {
-            await axios.patch(`${API_BASE}/join-requests/${id}/approve`);
+            await api.patch(`api/join-requests/${id}/approve`);
             setJoinRequests((prev) => prev.map((r) => ((r._id || r.id) === id ? {...r, status: "approved"} : r)));
         } catch (err) {
             console.log("Approve error:", err?.response?.data || err);
@@ -173,7 +174,7 @@ export default function AdminDashboard() {
 
     const handleRejectRequest = async (id) => {
         try {
-            await axios.patch(`${API_BASE}/join-requests/${id}/reject`);
+            await api.patch(`api/join-requests/${id}/reject`);
             setJoinRequests((prev) => prev.map((r) => ((r._id || r.id) === id ? {...r, status: "rejected"} : r)));
         } catch (err) {
             console.log("Reject error:", err?.response?.data || err);
@@ -261,7 +262,7 @@ export default function AdminDashboard() {
 
     const deleteStadum = async(id) =>{
         try{
-            await axios.delete(`${API_BASE}/stadiums/${id}`);
+            await api.delete(`api/stadiums/${id}`);
             setStadiums((prev) => prev.filter((t) => (t._id || t.id) !== id));
         }catch(err){
             console.log(err);
