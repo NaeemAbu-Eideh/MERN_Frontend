@@ -158,7 +158,6 @@ export default function EditStadium() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Name */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Name *
@@ -171,7 +170,6 @@ export default function EditStadium() {
                             />
                         </div>
 
-                        {/* City + Status */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
@@ -200,7 +198,6 @@ export default function EditStadium() {
                             </div>
                         </div>
 
-                        {/* Address */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Address
@@ -213,7 +210,6 @@ export default function EditStadium() {
                             />
                         </div>
 
-                        {/* Map Link */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Map Link
@@ -226,7 +222,6 @@ export default function EditStadium() {
                             />
                         </div>
 
-                        {/* Capacity */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Capacity
@@ -241,7 +236,6 @@ export default function EditStadium() {
                             />
                         </div>
 
-                        {/* Facilities */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Facilities
@@ -292,7 +286,6 @@ export default function EditStadium() {
                             )}
                         </div>
 
-                        {/* Save */}
                         <div className="flex justify-end pt-2">
                             <button
                                 disabled={saving}

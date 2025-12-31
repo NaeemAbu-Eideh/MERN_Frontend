@@ -16,35 +16,30 @@ import api from "./../contexts/axiosInstance.js";
 export default function AddMatchPage() {
     const navigate = useNavigate();
 
-    // ===== Lists =====
     const [tournaments, setTournaments] = useState([]);
     const [stadiums, setStadiums] = useState([]);
     const [loadingLists, setLoadingLists] = useState(true);
 
-    // ===== Tournament details / teams =====
     const [selectedTournamentId, setSelectedTournamentId] = useState("");
     const [selectedTournament, setSelectedTournament] = useState(null);
     const [teamsLoading, setTeamsLoading] = useState(false);
-    const [joinedTeams, setJoinedTeams] = useState([]); // [{_id,name}]
+    const [joinedTeams, setJoinedTeams] = useState([]);
 
-    // ===== Form (MatchModel required) =====
     const [teamAId, setTeamAId] = useState("");
     const [teamBId, setTeamBId] = useState("");
     const [stadiumId, setStadiumId] = useState("");
 
-    const [startDate, setStartDate] = useState(""); // yyyy-mm-dd
-    const [startTime, setStartTime] = useState(""); // HH:mm
-    const [endDate, setEndDate] = useState(""); // yyyy-mm-dd
-    const [endTime, setEndTime] = useState(""); // HH:mm
+    const [startDate, setStartDate] = useState("");
+    const [startTime, setStartTime] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [endTime, setEndTime] = useState("");
 
-    const [status, setStatus] = useState("scheduled"); // enum per model
+    const [status, setStatus] = useState("scheduled");
 
-    // ===== UI =====
     const [searchTeam, setSearchTeam] = useState("");
     const [submitLoading, setSubmitLoading] = useState(false);
     const [formErr, setFormErr] = useState("");
 
-    // ===== Fetch base lists =====
     useEffect(() => {
         const fetchLists = async () => {
             setLoadingLists(true);
@@ -93,7 +88,6 @@ export default function AddMatchPage() {
     const isSoloTournament = (selectedTournament?.mode || "").toLowerCase() === "solo";
     const notEnoughTeams = selectedTournamentId && joinedTeams.length < 2;
 
-    // ===== Fetch selected tournament and load teams NAMES =====
     useEffect(() => {
         const fetchTournamentDetails = async () => {
             setSelectedTournament(null);
@@ -142,7 +136,6 @@ export default function AddMatchPage() {
         fetchTournamentDetails();
     }, [selectedTournamentId]);
 
-    // ===== Validation (MatchModel required fields) =====
     const validate = () => {
         if (!selectedTournamentId) return "Please select a tournament.";
         if (isSoloTournament) return "This tournament is SOLO (cannot create team match).";
@@ -171,7 +164,7 @@ export default function AddMatchPage() {
         return "";
     };
 
-    // ===== Submit =====
+
     const handleCreateMatch = async () => {
         const errMsg = validate();
         if (errMsg) {
@@ -186,7 +179,6 @@ export default function AddMatchPage() {
             const startTimeISO = new Date(`${startDate}T${startTime}:00`).toISOString();
             const endTimeISO = new Date(`${endDate}T${endTime}:00`).toISOString();
 
-            // ✅ Send teamAId + teamBId in body (as you requested)
             const payload = {
                 tournamentId: selectedTournamentId,
                 stadiumId,
@@ -194,7 +186,7 @@ export default function AddMatchPage() {
                 endTime: endTimeISO,
                 teamAId,
                 teamBId,
-                status, // scheduled/live/finished/cancelled
+                status,
             };
 
             await api.post(`api/creatematch`, payload);
@@ -240,7 +232,7 @@ export default function AddMatchPage() {
                     </div>
                 ) : (
                     <div className="space-y-6">
-                        {/* Tournament */}
+
                         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                             <div className="flex items-center gap-2 mb-4">
                                 <FaTrophy className="text-gray-400" />
@@ -279,7 +271,6 @@ export default function AddMatchPage() {
                             )}
                         </div>
 
-                        {/* Teams */}
                         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                             <div className="flex items-center gap-2 mb-4">
                                 <FaUsers className="text-gray-400" />
@@ -372,7 +363,6 @@ export default function AddMatchPage() {
                             )}
                         </div>
 
-                        {/* Match Details */}
                         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                             <div className="flex items-center gap-2 mb-4">
                                 <FaClock className="text-gray-400" />
@@ -380,7 +370,6 @@ export default function AddMatchPage() {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {/* Stadium (required) */}
                                 <div>
                                     <label className="block text-xs font-extrabold uppercase tracking-widest text-gray-400 mb-2">
                                         Stadium (required)
@@ -403,7 +392,6 @@ export default function AddMatchPage() {
                                     </div>
                                 </div>
 
-                                {/* Status */}
                                 <div>
                                     <label className="block text-xs font-extrabold uppercase tracking-widest text-gray-400 mb-2">
                                         Status
@@ -421,7 +409,6 @@ export default function AddMatchPage() {
                                     </select>
                                 </div>
 
-                                {/* Start */}
                                 <div>
                                     <label className="block text-xs font-extrabold uppercase tracking-widest text-gray-400 mb-2">
                                         Start Date
@@ -447,8 +434,6 @@ export default function AddMatchPage() {
                                         disabled={!selectedTournamentId}
                                     />
                                 </div>
-
-                                {/* End */}
                                 <div>
                                     <label className="block text-xs font-extrabold uppercase tracking-widest text-gray-400 mb-2">
                                         End Date
@@ -477,7 +462,6 @@ export default function AddMatchPage() {
                             </div>
                         </div>
 
-                        {/* Actions */}
                         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                             <div>
                                 {formErr ? (
@@ -500,7 +484,6 @@ export default function AddMatchPage() {
                             </button>
                         </div>
 
-                        {/* Debug hint */}
                         {selectedTournamentId && joinedTeams.length === 0 && !teamsLoading ? (
                             <div className="text-xs text-gray-400 font-bold">
                                 Hint: tournament has no <code>participantsTeams</code> IDs, or your teams endpoint is missing.
@@ -513,7 +496,6 @@ export default function AddMatchPage() {
     );
 }
 
-/* ===== UI helpers ===== */
 
 function InfoPill({ icon: Icon, label, value }) {
     return (

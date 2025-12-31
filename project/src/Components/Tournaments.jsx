@@ -34,7 +34,6 @@ export default function Tournaments() {
         setCurrentPage(1);
     }, [searchTerm]);
 
-    // ✅ derived pagination values from FILTERED list
     const totalPages = Math.max(Math.ceil(filteredTournaments.length / pageSize), 1);
 
     const paginatedTournaments = useMemo(() => {
@@ -79,7 +78,6 @@ export default function Tournaments() {
                 <p className="text-gray-500 text-sm">Browse and join active tournaments</p>
             </div>
 
-            {/* ✅ Search bar ONLY */}
             <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4 mb-6 items-center">
                 <div className="relative flex-grow w-full">
                     <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -93,7 +91,6 @@ export default function Tournaments() {
                 </div>
             </div>
 
-            {/* info */}
             <div className="flex justify-between items-center mb-6">
                 <div className="text-gray-500 text-sm">
                     Showing{" "}
@@ -104,7 +101,6 @@ export default function Tournaments() {
                 </div>
             </div>
 
-            {/* grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {paginatedTournaments.map((tournament) => (
                     <div
@@ -156,7 +152,6 @@ export default function Tournaments() {
                 ))}
             </div>
 
-            {/* pagination */}
             <div className="flex justify-center items-center gap-3 mt-8">
                 <button
                     className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-bold disabled:opacity-40"

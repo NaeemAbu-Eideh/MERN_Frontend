@@ -101,7 +101,7 @@ const Register = () => {
             email: email.trim(),
             password,
             confirmPassword,
-            role: "user", // ✅ always user
+            role: "user",
         };
 
         try {

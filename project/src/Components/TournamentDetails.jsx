@@ -26,13 +26,11 @@ export default function TournamentDetails() {
     const [tournament, setTournament] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // ✅ AI Summary states
     const [summaryOpen, setSummaryOpen] = useState(false);
     const [summaryLoading, setSummaryLoading] = useState(false);
     const [summaryText, setSummaryText] = useState("");
     const [summaryErr, setSummaryErr] = useState("");
 
-    // ✅ Get logged-in user from localStorage (same place you stored it after login)
     const authUser = JSON.parse(localStorage.getItem("auth_user") || "null");
     const isAdmin = authUser?.role === "admin";
 
@@ -72,7 +70,6 @@ export default function TournamentDetails() {
             let requestType = "solo";
             let teamId = null;
 
-            // ✅ إذا mode team أو both: جيب teams تبعون اليوزر
             if (tournament.mode === "team" || tournament.mode === "both") {
                 const teamsRes = await api.get(
                     `api/my-teams/${authUser._id}`
@@ -136,14 +133,11 @@ export default function TournamentDetails() {
         }
     };
 
-    // ✅ AI Summary handler
     const handleOpenSummary = async () => {
         if (!tournament) return;
 
         setSummaryOpen(true);
         setSummaryErr("");
-
-        // لو في نص موجود، ما تعيد توليده (اختياري)
         if (summaryText) return;
 
         setSummaryLoading(true);
@@ -377,7 +371,6 @@ export default function TournamentDetails() {
                         </div>
                     </div>
 
-                    {/* ORGANIZED BY CARD */}
                     <div className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 font-bold">
@@ -393,7 +386,6 @@ export default function TournamentDetails() {
                         </div>
                     </div>
 
-                    {/* ✅ BUTTON UNDER ORGANIZED BY */}
                     <button
                         onClick={handleOpenSummary}
                         className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-black text-white font-bold py-3 rounded-xl transition"
@@ -403,7 +395,6 @@ export default function TournamentDetails() {
                 </div>
             </div>
 
-            {/* ✅ SUMMARY MODAL */}
             {summaryOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
                     <div

@@ -106,12 +106,6 @@ export default function Stadiums() {
                                     <FaUsers className="mr-3 text-gray-400 text-lg"/>
                                     {stadium.capacity ? `${stadium.capacity} seats` : "—"}
                                 </div>
-
-                                <div className="flex items-center text-gray-600 text-sm font-medium">
-                                    <FaRegCalendarAlt className="mr-3 text-gray-400 text-lg"/>
-                                    {/* ما عندك bookings بالـ schema، خليها placeholder */}
-                                    0 Active Bookings
-                                </div>
                             </div>
 
                             <hr className="border-gray-100 mb-4"/>
