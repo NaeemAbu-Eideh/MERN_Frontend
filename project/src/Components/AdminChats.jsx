@@ -28,7 +28,6 @@ export default function AdminChats() {
         }
     }, []);
 
-    // ✅ connect socket مرة واحدة
     useEffect(() => {
         const token = localStorage.getItem("auth_token");
         if (!token) return;
@@ -130,7 +129,6 @@ export default function AdminChats() {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setMessages(res.data?.messages || []);
-                // reset unread
                 setConversations((prev) =>
                     prev.map((c) =>
                         String(c.userId) === String(selectedUserId) ? { ...c, unreadCount: 0 } : c
@@ -156,7 +154,6 @@ export default function AdminChats() {
 
         setText("");
 
-        // optimistic
         setMessages((prev) => [
             ...prev,
             {
@@ -194,7 +191,6 @@ export default function AdminChats() {
     return (
         <div className="min-h-[calc(100vh-80px)] bg-gray-50 p-6">
             <div className="max-w-6xl mx-auto grid grid-cols-12 gap-4">
-                {/* ✅ Sidebar / Inbox */}
                 <div className="col-span-4 bg-white border border-gray-200 rounded-2xl p-3 h-[75vh] flex flex-col">
                     <div className="font-extrabold text-gray-900 mb-2">Inbox</div>
 
@@ -234,7 +230,6 @@ export default function AdminChats() {
                     )}
                 </div>
 
-                {/* ✅ Chat panel */}
                 <div className="col-span-8 bg-white border border-gray-200 rounded-2xl p-4 h-[75vh] flex flex-col">
                     <div className="border-b border-gray-100 pb-3 mb-3">
                         <div className="text-lg font-extrabold text-gray-900">Admin Chat</div>

@@ -18,7 +18,6 @@ export default function AddStadium() {
     const [capacity, setCapacity] = useState("");
     const [status, setStatus] = useState("available");
 
-    // facilities UI
     const [facilityInput, setFacilityInput] = useState("");
     const [facilities, setFacilities] = useState([]);
 
@@ -124,7 +123,6 @@ export default function AddStadium() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Name */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Name *
@@ -137,7 +135,6 @@ export default function AddStadium() {
                             />
                         </div>
 
-                        {/* City + Status */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div>
                                 <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
@@ -166,7 +163,6 @@ export default function AddStadium() {
                             </div>
                         </div>
 
-                        {/* Address */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Address
@@ -179,7 +175,6 @@ export default function AddStadium() {
                             />
                         </div>
 
-                        {/* Capacity */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Capacity
@@ -194,7 +189,6 @@ export default function AddStadium() {
                             />
                         </div>
 
-                        {/* Facilities */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Facilities
@@ -245,7 +239,6 @@ export default function AddStadium() {
                             )}
                         </div>
 
-                        {/* Actions */}
                         <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between pt-2">
                             <button
                                 type="button"

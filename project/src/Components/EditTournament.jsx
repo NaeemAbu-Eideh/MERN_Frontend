@@ -5,10 +5,8 @@ import { FaArrowLeft, FaSave } from "react-icons/fa";
 
 const API_BASE = "http://localhost:8008/api";
 
-// يحوّل Date/ISO string => yyyy-mm-dd عشان input date
 const toDateInput = (value) => {
     if (!value) return "";
-    // لو القيمة already yyyy-mm-dd
     if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
 
     const d = new Date(value);
@@ -21,19 +19,18 @@ const toDateInput = (value) => {
 
 export default function EditTournament() {
     const navigate = useNavigate();
-    const { id } = useParams(); // /admin/tournaments/:id/edit
+    const { id } = useParams();
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
 
-    // fields from your schema
     const [title, setTitle] = useState("");
     const [sportType, setSportType] = useState("");
-    const [mode, setMode] = useState("solo"); // solo | team | both
-    const [startDate, setStartDate] = useState(""); // yyyy-mm-dd
-    const [endDate, setEndDate] = useState("");     // yyyy-mm-dd
-    const [status, setStatus] = useState("draft");  // draft | open | ongoing | finished
+    const [mode, setMode] = useState("solo");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [status, setStatus] = useState("draft");
     const [rules, setRules] = useState("");
     const [maxParticipants, setMaxParticipants] = useState("");
     const [maxTeams, setMaxTeams] = useState("");
@@ -99,7 +96,6 @@ export default function EditTournament() {
         setError("");
 
         try {
-            // PUT = لازم تبعت كل الحقول الأساسية (required)
             const payload = {
                 title: title.trim(),
                 sportType: sportType.trim(),
@@ -111,7 +107,6 @@ export default function EditTournament() {
                 maxParticipants: maxParticipants === "" ? null : Number(maxParticipants),
                 maxTeams: maxTeams === "" ? null : Number(maxTeams),
 
-                // REQUIRED in your schema:
                 createdByAdminId,
 
                 participantsUsers: [],
@@ -175,7 +170,6 @@ export default function EditTournament() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* Title */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Title
@@ -289,7 +283,6 @@ export default function EditTournament() {
                             </div>
                         </div>
 
-                        {/* Rules */}
                         <div>
                             <label className="block text-xs font-extrabold tracking-widest text-gray-500 uppercase mb-2">
                                 Rules (optional)
@@ -303,7 +296,6 @@ export default function EditTournament() {
                             />
                         </div>
 
-                        {/* Save */}
                         <div className="flex justify-end pt-2">
                             <button
                                 disabled={saving}

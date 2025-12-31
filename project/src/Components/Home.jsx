@@ -96,7 +96,6 @@ export default function Home({ isLoggedIn }) {
 
     return (
         <div className="p-8 max-w-7xl mx-auto font-sans text-gray-800">
-            {/* HERO */}
             <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 flex flex-col md:flex-row items-center gap-10 mb-8">
                 <div className="w-full md:w-1/2 space-y-6">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 leading-tight">
@@ -134,7 +133,6 @@ export default function Home({ isLoggedIn }) {
                 </div>
             </div>
 
-            {/* STATS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                 {stats.map((stat) => (
                     <div
@@ -148,7 +146,6 @@ export default function Home({ isLoggedIn }) {
                 ))}
             </div>
 
-            {/* FEATURED */}
             <div className="mb-8">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-extrabold text-gray-800 uppercase">Featured Tournaments</h2>
@@ -176,9 +173,6 @@ export default function Home({ isLoggedIn }) {
                                 <div className="flex items-center text-gray-500 text-sm">
                                     <FaCalendarAlt className="mr-2 text-blue-500" /> {formatRange(t.startDate, t.endDate)}
                                 </div>
-                                {/*<div className="flex items-center text-gray-500 text-sm">*/}
-                                {/*    <FaMapMarkerAlt className="mr-2 text-green-500" /> —*/}
-                                {/*</div>*/}
                                 <div className="flex items-center text-gray-500 text-sm">
                                     <FaUsers className="mr-2 text-purple-500" />{" "}
                                     {t.mode === "team"
