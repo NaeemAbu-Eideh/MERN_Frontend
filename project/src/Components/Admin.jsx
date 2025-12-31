@@ -128,10 +128,13 @@ export default function AdminDashboard() {
     }, []);
 
     useEffect(() => {
-        if (activeTab === "tournaments") setTournamentsPage(1);
-        if (activeTab === "matches") setMatchesPage(1);
-        if (activeTab === "stadiums") setStadiumsPage(1);
-        if (activeTab === "requests") setRequestsPage(1);
+        const checkStates = ()=>{
+            if (activeTab === "tournaments") setTournamentsPage(1);
+            if (activeTab === "matches") setMatchesPage(1);
+            if (activeTab === "stadiums") setStadiumsPage(1);
+            if (activeTab === "requests") setRequestsPage(1);
+        }
+        checkStates();
     }, [activeTab]);
 
     const stats = useMemo(() => {
@@ -250,6 +253,15 @@ export default function AdminDashboard() {
         if (Number.isNaN(dt.getTime())) return String(d);
         return dt.toISOString().slice(0, 16).replace("T", " ");
     };
+
+    const deleteStadum = async(id) =>{
+        try{
+            await axios.delete(`${API_BASE}/stadiums/${id}`);
+            setStadiums((prev) => prev.filter((t) => (t._id || t.id) !== id));
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     return (<div className="min-h-screen bg-gray-50">
             <div className="p-8 max-w-7xl mx-auto font-sans text-gray-800">
@@ -465,7 +477,7 @@ export default function AdminDashboard() {
                                             <FaEdit/>
                                         </ActionIconBtn>
                                         <ActionIconBtn title="Delete" danger
-                                                       onClick={() => alert(`Delete stadium #${s._id || s.id}`)}>
+                                                       onClick={() => deleteStadum(s._id || s.id)}>
                                             <FaTrash/>
                                         </ActionIconBtn>
                                     </div>
