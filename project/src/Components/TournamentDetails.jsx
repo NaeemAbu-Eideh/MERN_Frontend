@@ -14,7 +14,7 @@ import {
 } from "react-icons/fa";
 // import axios from "axios";
 // import {sendPostToAi} from "../methods/functions/ai.jsx";
-import api from "./../contexts/apiInstance.js"
+import api from "./../contexts/axiosInstance.js"
 
 export default function TournamentDetails() {
     const navigate = useNavigate();
