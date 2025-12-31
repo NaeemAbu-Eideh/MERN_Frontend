@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { FaSearch, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaArrowRight } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import api from "./../contexts/axiosInstance.js"
 
 export default function Tournaments() {
 
@@ -13,7 +14,7 @@ export default function Tournaments() {
 
     useEffect(() => {
         const getAllTournaments = async () => {
-            const res = await axios.get("http://localhost:8008/api/tournaments");
+            const res = await api.get("api/tournaments");
             setTournamentsData(res.data);
             setCurrentPage(1);
         };

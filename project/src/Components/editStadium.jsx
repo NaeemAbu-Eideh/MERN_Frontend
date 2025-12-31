@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaSave, FaTrash } from "react-icons/fa";
+import api from "./../contexts/axiosInstance.js";
 
 const API_BASE = "http://localhost:8008/api";
 
@@ -32,7 +32,7 @@ export default function EditStadium() {
             setError("");
 
             try {
-                const res = await axios.get(`${API_BASE}/stadiums/${id}`);
+                const res = await api.get(`api/stadiums/${id}`);
                 const s = res?.data?.data ?? res?.data ?? {};
 
                 setName(s.name ?? "");
@@ -102,7 +102,7 @@ export default function EditStadium() {
                 status,
             };
 
-            await axios.put(`${API_BASE}/stadiums/${id}`, payload);
+            await api.put(`api/stadiums/${id}`, payload);
 
             navigate("/stadiums");
         } catch (err) {

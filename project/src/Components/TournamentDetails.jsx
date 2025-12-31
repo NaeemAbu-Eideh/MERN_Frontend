@@ -12,8 +12,9 @@ import {
     FaTimes,
     FaCopy,
 } from "react-icons/fa";
-import axios from "axios";
-import {sendPostToAi} from "../methods/functions/ai.jsx";
+// import axios from "axios";
+// import {sendPostToAi} from "../methods/functions/ai.jsx";
+import api from "./../contexts/apiInstance.js"
 
 export default function TournamentDetails() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function TournamentDetails() {
         const getTournament = async () => {
             try {
                 setLoading(true);
-                const res = await axios.get(`http://localhost:8008/api/tournaments/${id}`);
+                const res = await api.get(`api/tournaments/${id}`);
                 setTournament(res.data);
             } catch (err) {
                 console.log(err);
@@ -70,8 +71,8 @@ export default function TournamentDetails() {
             let teamId = null;
 
             if (tournament.mode === "team" || tournament.mode === "both") {
-                const teamsRes = await axios.get(
-                    `http://localhost:8008/api/my-teams/${authUser._id}`
+                const teamsRes = await api.get(
+                    `api/my-teams/${authUser._id}`
                 );
                 const myTeams = teamsRes?.data?.data ?? teamsRes?.data ?? [];
 
@@ -100,7 +101,7 @@ export default function TournamentDetails() {
                 ...(requestType === "team" ? { teamId } : {}),
             };
 
-            await axios.post("http://localhost:8008/api/createjoin", payload);
+            await api.post("api/createjoin", payload);
 
             setJoinMsg("✅ Join request sent! (pending)");
         } catch (err) {
@@ -152,7 +153,7 @@ export default function TournamentDetails() {
                 duration: durationDays,
             };
 
-            const res = await axios.post('http://localhost:8008/api/ai/chat', object);
+            const res = await api.post('api/ai/chat', object);
 
             const text = res?.data?.text || "";
             if (!text) throw new Error("Empty summary response");

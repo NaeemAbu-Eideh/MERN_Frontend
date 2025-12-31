@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {FaMapMarkerAlt, FaUsers, FaRegCalendarAlt, FaSearch} from "react-icons/fa";
 import axios from "axios";
-
+import api from "./../contexts/axiosInstance.js"
 export default function Stadiums() {
 
     const [stadiumsData, setStadiumsData] = useState([]);
@@ -10,7 +10,7 @@ export default function Stadiums() {
     const pageSize = 2;
     useEffect(() => {
         const getAllStadiums = async () => {
-            const res = await axios.get("http://localhost:8008/api/stadiums");
+            const res = await api.get("api/stadiums");
             setStadiumsData(res.data);
             setCurrentPage(1);
         };

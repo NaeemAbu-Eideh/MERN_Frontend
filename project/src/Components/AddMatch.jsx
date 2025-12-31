@@ -10,9 +10,8 @@ import {
     FaRegCalendarAlt,
     FaSave,
 } from "react-icons/fa";
-import axios from "axios";
-
-const API_BASE = "http://localhost:8008/api";
+// import axios from "axios";
+import api from "./../contexts/axiosInstance.js";
 
 export default function AddMatchPage() {
     const navigate = useNavigate();
@@ -46,8 +45,8 @@ export default function AddMatchPage() {
             setLoadingLists(true);
             try {
                 const [tRes, sRes] = await Promise.allSettled([
-                    axios.get(`${API_BASE}/tournaments`),
-                    axios.get(`${API_BASE}/stadiums`),
+                    api.get(`api/tournaments`),
+                    api.get(`api/stadiums`),
                 ]);
 
                 const getData = (res) => res?.value?.data?.data ?? res?.value?.data ?? [];
@@ -101,7 +100,7 @@ export default function AddMatchPage() {
 
             setTeamsLoading(true);
             try {
-                const res = await axios.get(`${API_BASE}/tournaments/${selectedTournamentId}`);
+                const res = await api.get(`api/tournaments/${selectedTournamentId}`);
                 const t = res?.data?.data ?? res?.data;
                 setSelectedTournament(t);
 
@@ -115,7 +114,7 @@ export default function AddMatchPage() {
                     return;
                 }
 
-                const requests = idsOnly.map((id) => axios.get(`${API_BASE}/teams/${id}`));
+                const requests = idsOnly.map((id) => api.get(`api/teams/${id}`));
                 const results = await Promise.allSettled(requests);
 
                 const teams = results
@@ -190,7 +189,7 @@ export default function AddMatchPage() {
                 status,
             };
 
-            await axios.post(`${API_BASE}/creatematch`, payload);
+            await api.post(`api/creatematch`, payload);
 
             navigate("/admin");
         } catch (e) {

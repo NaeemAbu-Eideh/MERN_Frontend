@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaPlus, FaSave, FaTrash } from "react-icons/fa";
-
-const API_BASE = "http://localhost:8008/api";
+import api from "../contexts/axiosInstance.js";
 
 export default function AddStadium() {
     const navigate = useNavigate();
@@ -14,7 +13,7 @@ export default function AddStadium() {
     const [name, setName] = useState("");
     const [city, setCity] = useState("");
     const [address, setAddress] = useState("");
-    const [mapLink, setMapLink] = useState("");
+    // const [mapLink, setMapLink] = useState("");
     const [capacity, setCapacity] = useState("");
     const [status, setStatus] = useState("available");
 
@@ -64,7 +63,7 @@ export default function AddStadium() {
                 status,
             };
 
-            await axios.post(`${API_BASE}/createStadium`, payload);
+            await api.post(`api/createStadium`, payload);
 
             navigate("/admin");
         } catch (err) {
@@ -86,7 +85,7 @@ export default function AddStadium() {
         setName("");
         setCity("");
         setAddress("");
-        setMapLink("");
+        // setMapLink("");
         setCapacity("");
         setStatus("available");
         setFacilities([]);

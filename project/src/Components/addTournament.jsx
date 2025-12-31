@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import api from "../contexts/axiosInstance.js"
 
 export default function AddTournament() {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function AddTournament() {
                 participantsUsers: [],
             };
 
-            const res = await axios.post("http://localhost:8008/api/createTournament", payload);
+            const res = await api.post("api/createTournament", payload);
 
             navigate(`/tournaments/${res.data._id}`);
         } catch (err) {
